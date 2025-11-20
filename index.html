@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lewis Anesushe Verengera | Computer Engineer</title>
+
+  <style>
+    :root{
+      --bg-dark: #030406;
+      --panel-dark: #0b0f14;
+      --muted: #bfc7ce;
+      --accent: #ffffff; /* white accent for minimal futurism */
+      --glow: rgba(180,200,255,0.12);
+      --glass: rgba(255,255,255,0.04);
+      --card-border: rgba(255,255,255,0.06);
+      --max-width: 1200px;
+      --radius: 14px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%;}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg, var(--bg-dark) 0%, #071018 35%, #f6f9fb 100%);
+      color: var(--accent);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+      line-height:1.45;
+    }
+
+    /* CONTAINER */
+    .wrap{
+      max-width:var(--max-width);
+      margin:0 auto;
+      padding:0 20px;
+    }
+
+    /* WELCOME (appears once on load) */
+    #welcome-text{
+      position:fixed;
+      left:0;right:0;
+      top:84px;
+      margin:0 auto;
+      width: min(820px, calc(100% - 40px));
+      background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.04);
+      color:var(--accent);
+      padding:14px 18px;
+      border-radius:12px;
+      text-align:center;
+      font-weight:600;
+      letter-spacing:1px;
+      opacity:0;
+      transform:translateY(-6px);
+      z-index:1200;
+      box-shadow: 0 6px 30px rgba(0,0,0,0.6);
+      animation: welcomeFade 5.8s forwards;
+    }
+    @keyframes welcomeFade{
+      0%{opacity:0; transform:translateY(-8px)}
+      10%{opacity:1; transform:translateY(0)}
+      70%{opacity:1}
+      100%{opacity:0; transform:translateY(-8px); visibility:hidden}
+    }
+
+    /* NAV */
+    header.site-header{
+      position:fixed;
+      top:0; left:0; right:0;
+      background: linear-gradient(180deg, rgba(5,7,10,0.95), rgba(5,7,10,0.75));
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid var(--card-border);
+      z-index:1000;
+    }
+    .navbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:18px 20px;
+      max-width:var(--max-width);
+      margin:0 auto;
+    }
+    .brand{
+      font-weight:800;
+      font-size:1.05rem;
+      letter-spacing:1px;
+      color:var(--accent);
+    }
+    .navlinks{
+      display:flex;
+      gap:18px;
+      align-items:center;
+    }
+    .navlinks button{
+      background:transparent;
+      border:0;
+      color:var(--muted);
+      padding:8px 12px;
+      border-radius:10px;
+      font-weight:600;
+      cursor:pointer;
+      transition: all .2s ease;
+    }
+    .navlinks button:hover, .navlinks button.active{
+      color:var(--accent);
+      background:var(--glass);
+      box-shadow:0 6px 18px rgba(255,255,255,0.02);
+    }
+
+    /* HEADER / HERO */
+    .hero{
+      padding-top:120px; /* leave room for fixed header */
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      gap:40px;
+      position:relative;
+    }
+    .hero-inner{
+      display:flex;
+      gap:40px;
+      align-items:center;
+      width:100%;
+      padding:60px 20px;
+    }
+    .intro{
+      flex:1.1;
+      color:var(--accent);
+    }
+    .intro h1{
+      font-size:2.6rem;
+      margin:0 0 12px 0;
+      line-height:1.02;
+      letter-spacing:0.6px;
+    }
+    .intro p.lead{
+      margin:6px 0 18px 0;
+      color:var(--muted);
+      font-size:1.05rem;
+      max-width:70ch;
+    }
+
+    /* Typewriter subtitle */
+    .subtitle{
+      font-weight:700;
+      color:var(--accent);
+      font-size:1.05rem;
+      height:28px;
+      overflow:hidden;
+      display:inline-block;
+      border-right:2px solid rgba(255,255,255,0.08);
+      white-space:nowrap;
+    }
+
+    .profile-box{
+      width:320px;
+      min-width:220px;
+      height:420px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:18px;
+      padding:12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow: 0 10px 40px rgba(3,4,6,0.6), 0 0 0 1px rgba(255,255,255,0.02) inset;
+      border:1px solid var(--card-border);
+    }
+    .profile-box img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      border-radius:12px;
+      display:block;
+    }
+
+    /* MAIN content (cards sections). We keep sections in white-faded background */
+    main{
+      margin-top:24px; /* separation from hero bottom */
+      background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.02) 10%, rgba(255,255,255,0.95) 95%);
+      color: #071018;
+    }
+    .section{
+      padding:72px 20px;
+      max-width:var(--max-width);
+      margin:0 auto;
+    }
+    .section h2{
+      margin:0 0 20px 0;
+      font-size:1.9rem;
+      color:#eff1f4;
+      letter-spacing:0.2px;
+    }
+    .about-text{
+      color:#f0f4f7f3;
+      font-size:1.05rem;
+      line-height:1.7;
+      max-width:86ch;
+    }
+
+    /* Expertise cards grid */
+    .expertise-grid{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:22px;
+      margin-top:28px;
+    }
+    .card{
+      background:#fff;
+      border-radius:12px;
+      padding:22px;
+      box-shadow: 0 10px 30px rgba(2,6,10,0.06);
+      border:1px solid rgba(3,4,6,0.04);
+    }
+    .card h3{
+      margin:0 0 10px 0;
+      font-size:1.05rem;
+      color:#09121a;
+    }
+    .card p{ margin:0; color:#334a53; font-size:0.97rem; line-height:1.6;}
+
+    /* Contact box (light panel but consistent) */
+    .contact-box{
+      text-align:left;
+      background:#fff;
+      padding:20px;
+      border-radius:12px;
+      box-shadow: 0 10px 30px rgba(2,6,10,0.06);
+      border:1px solid rgba(3,4,6,0.04);
+      color:#071018;
+      display:inline-block;
+    }
+    .contact-box .email{ color:#1a6eff; font-weight:700;}
+
+    /* Footer (match header dark) */
+    footer.site-footer{
+      background: linear-gradient(180deg, rgba(5,7,10,0.98), rgba(5,7,10,0.9));
+      color:var(--muted);
+      padding:24px 20px;
+      border-top:1px solid var(--card-border);
+    }
+    .footer-inner{
+      max-width:var(--max-width);
+      margin:0 auto;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:20px;
+      flex-wrap:wrap;
+    }
+
+    /* Scroll reveal helper */
+    .reveal{
+      opacity:0;
+      transform: translateY(18px);
+      transition: all 650ms cubic-bezier(.2,.9,.3,1);
+      will-change: transform, opacity;
+    }
+    .reveal.visible{
+      opacity:1;
+      transform:none;
+    }
+
+    /* small screens */
+    @media (max-width:950px){
+      .expertise-grid{ grid-template-columns: repeat(2,1fr); }
+      .hero-inner{ flex-direction:column-reverse; align-items:center; padding:40px 10px; gap:28px;}
+      .profile-box{ width:280px; height:360px; }
+    }
+    @media (max-width:620px){
+      .expertise-grid{ grid-template-columns: 1fr; }
+      .intro h1{ font-size:1.9rem; }
+      .subtitle{ font-size:.95rem; height:22px; }
+      .profile-box{ width:220px; height:260px;}
+      .navbar{padding:12px 16px}
+      .navlinks{display:none} /* simplified for very small screens */
+    }
+
+    /* small neat accent for section separators */
+    .divider{
+      width:56px;height:4px;border-radius:3px;margin:16px 0 28px 0;background:linear-gradient(90deg,#9fbffb,#ffffff);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- WELCOME (auto disappears until refresh) -->
+  <!-- Import a modern font -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+
+<div id="welcome-text">
+  WELCOME , WHERE INTELLIGENT SYSTEMS MEET INNOVATION. EXPLORE MY JOURNEY IN IOT, AI, AND MODERN ENGINEERING.
+</div>
+
+<style>
+  #welcome-text {
+    font-family: 'Montserrat', sans-serif; /* sleek modern font */
+    font-size: 1.8rem;                      /* adjust size */
+    font-weight: 600;                       /* bold emphasis */
+    text-transform: uppercase;              /* all caps */
+    letter-spacing: 2px;                    /* spacing for elegance */
+    text-align: center;                     /* center on page */
+    color: #c8c3c3;                            /* dark text color */
+    margin-top: 40px;                       /* spacing from top */
+    animation: fadeIn 9s ease-in-out;       /* smooth entrance */
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+
+
+  <!-- NAV / HEADER -->
+  <header class="site-header" role="banner" aria-label="Main header">
+    <div class="navbar wrap">
+      <div class="brand">LEWIS ANESUSHE VERENGERA | COMPUTER ENGINEER</div>
+
+      <nav aria-label="Primary navigation" class="navlinks">
+        <button data-target="home" class="nav-btn active">Home</button>
+        <button data-target="about" class="nav-btn">About</button>
+        <button data-target="expertise" class="nav-btn">Skills</button>
+        <button data-target="contact" class="nav-btn">Contact</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO / HEADER SECTION -->
+  <section id="home" class="hero">
+    <div class="hero-inner wrap">
+      <div class="intro">
+        <h1>LEWIS ANESUSHE VERENGERA</h1>
+        <p class="lead">A Computer Engineer dedicated to building intelligent systems, smart IoT solutions, and modern software experiences.</p>
+
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div class="subtitle" id="typewriter" aria-live="polite"></div>
+        </div>
+
+        <p style="margin-top:22px;color:rgba(255,255,255,0.78);max-width:72ch;">
+          Passionate about Machine Learning, Vision Transformers, IoT, Embedded Systems, and futuristic engineering. I build connected systems that are reliable, maintainable and efficient.
+        </p>
+      </div>
+
+      <div class="profile-box" aria-hidden="false">
+        <!-- Replace 'your-photo.jpg' with your real photo path -->
+        <img src="pro1.jpg" alt="Portrait of Lewis Verengera" />
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN (light background below header; header + footer remain dark) -->
+  <main role="main">
+    <section id="about" class="section reveal">
+      <h2>About Me</h2>
+      <div class="divider" aria-hidden="true"></div>
+      <p class="about-text">
+        I'm Lewis Anesushe Verengera, a Zimbabwean Computer Engineer currently based in India. Born on 29 March 2003, I am pursuing a BTech in Computer Science and Engineering, specializing in Embedded Systems, IoT, Machine Learning, and intelligent system development.<br><br>
+        I have built several innovative solutions including a Smart Parking Assistant System, Automated Smart Bin, and a Self-Parking Car using IoT sensors. I also work with Vision Transformers and Support Vector Machines for modern ML projects, including early breast cancer detection.
+      </p>
+    </section>
+
+    <section id="expertise" class="section reveal">
+  <h2>Technical Expertise</h2>
+  <div class="divider" aria-hidden="true"></div>
+
+  <!-- Search / deep-search -->
+  <div class="expertise-controls" style="margin-bottom:18px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+    <input id="expertise-search" type="search" placeholder="Search skills, tools or topics (e.g. Vision Transformer, Arduino, Python)" aria-label="Search expertise" />
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="filter-btn" data-filter="all" aria-pressed="true">All</button>
+      <button class="filter-btn" data-filter="ml">ML</button>
+      <button class="filter-btn" data-filter="prog">Languages</button>
+      <button class="filter-btn" data-filter="iot">IoT</button>
+    </div>
+  </div>
+
+  <div class="expertise-grid" id="expertise-grid">
+    <!-- Card 1: AI & Machine Learning -->
+    <article class="card expertise-card" data-tags="machine learning,vision transformers,SVM,deep learning,neural networks" tabindex="0" aria-labelledby="exp1-title">
+      <div class="card-head">
+        <div class="icon">🤖</div>
+        <h3 id="exp1-title">AI & Machine Learning</h3>
+        <div class="tag">ML</div>
+      </div>
+
+      <p class="card-sub">Building robust models, research-focused workflows and explainable pipelines.</p>
+
+      <ul class="skill-list">
+        <li>
+          <div class="skill-row">
+            <span class="skill-name">Vision Transformers</span>
+            <span class="skill-level">85%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-fill" style="width:85%"></div></div>
+        </li>
+        <li>
+          <div class="skill-row">
+            <span class="skill-name">Support Vector Machines</span>
+            <span class="skill-level">82%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-fill" style="width:82%"></div></div>
+        </li>
+        <li>
+          <div class="skill-row">
+            <span class="skill-name">Deep Learning</span>
+            <span class="skill-level">78%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-fill" style="width:78%"></div></div>
+        </li>
+      </ul>
+
+      <div class="card-actions">
+        <button class="learn-btn" data-detail="ai">Learn more</button>
+        <div class="chips">
+          <span class="chip">ViT</span>
+          <span class="chip">SVM</span>
+          <span class="chip">SHAP/XAI</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 2: Programming Languages -->
+    <article class="card expertise-card" data-tags="python,java,javascript,embedded c,programming" tabindex="0" aria-labelledby="exp2-title">
+      <div class="card-head">
+        <div class="icon">💻</div>
+        <h3 id="exp2-title">Programming Languages</h3>
+        <div class="tag">Lang</div>
+      </div>
+
+      <p class="card-sub">Writing production-quality code for embedded and full-stack systems.</p>
+
+      <ul class="skill-list">
+        <li>
+          <div class="skill-row">
+            <span class="skill-name">Python</span>
+            <span class="skill-level">92%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-fill" style="width:92%"></div></div>
+        </li>
+        <li>
+          <div class="skill-row">
+            <span class="skill-name">Embedded C</span>
+            <span class="skill-level">80%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-fill" style="width:80%"></div></div>
+        </li>
+        <li>
+          <div class="skill-row">
+            <span class="skill-name">JavaScript (Frontend)</span>
+            <span class="skill-level">76%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-fill" style="width:76%"></div></div>
+        </li>
+      </ul>
+
+      <div class="card-actions">
+        <button class="learn-btn" data-detail="prog">Learn more</button>
+        <div class="chips">
+          <span class="chip">OOP</span>
+          <span class="chip">Web APIs</span>
+          <span class="chip">RTOS</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 3: Internet of Things -->
+    <article class="card expertise-card" data-tags="arduino,iot,sensors,automation,embedded" tabindex="0" aria-labelledby="exp3-title">
+      <div class="card-head">
+        <div class="icon">📡</div>
+        <h3 id="exp3-title">Internet of Things</h3>
+        <div class="tag">IoT</div>
+      </div>
+
+      <p class="card-sub">Designing reliable sensor networks, automation pipelines and embedded controllers.</p>
+
+      <ul class="skill-list">
+        <li>
+          <div class="skill-row">
+            <span class="skill-name">Arduino / Embedded</span>
+            <span class="skill-level">88%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-fill" style="width:88%"></div></div>
+        </li>
+        <li>
+          <div class="skill-row">
+            <span class="skill-name">IoT Sensors & Protocols</span>
+            <span class="skill-level">80%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-fill" style="width:80%"></div></div>
+        </li>
+        <li>
+          <div class="skill-row">
+            <span class="skill-name">Automation Systems</span>
+            <span class="skill-level">77%</span>
+          </div>
+          <div class="skill-bar"><div class="skill-fill" style="width:77%"></div></div>
+        </li>
+      </ul>
+
+      <div class="card-actions">
+        <button class="learn-btn" data-detail="iot">Learn more</button>
+        <div class="chips">
+          <span class="chip">Ultrasonic</span>
+          <span class="chip">MQTT</span>
+          <span class="chip">Sensors</span>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- Modal: detail view -->
+<div id="exp-modal" class="exp-modal" role="dialog" aria-hidden="true" aria-labelledby="exp-modal-title" tabindex="-1">
+  <div class="exp-modal-panel" role="document">
+    <button class="modal-close" aria-label="Close">✖</button>
+    <h3 id="exp-modal-title"></h3>
+    <p id="exp-modal-desc"></p>
+    <ul id="exp-modal-list"></ul>
+    <div style="margin-top:12px">
+      <a id="exp-modal-link" href="#" target="_blank" class="btn">View project / resources</a>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* --- enhanced styles (paste into your CSS area) --- */
+  .expertise-controls input[type="search"]{
+    min-width:320px; max-width:520px;
+    padding:10px 12px; border-radius:12px;
+    border:1px solid rgba(255,255,255,0.06);
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    color:var(--accent);
+    outline:none;
+    box-shadow: 0 6px 24px rgba(2,8,20,0.45);
+  }
+  .filter-btn{
+    padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);
+    background:transparent;color:var(--accent);cursor:pointer;font-weight:700;
+  }
+  .filter-btn[aria-pressed="true"], .filter-btn:hover{ background:linear-gradient(90deg,#00e6ff22,#6a9eff22); box-shadow:0 8px 30px rgba(106,158,255,0.06); }
+
+  .expertise-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:18px; }
+  .card{ padding:18px; border-radius:14px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.04); box-shadow: 0 8px 30px rgba(2,8,20,0.4); transition: transform .28s ease, box-shadow .28s ease; color:#eaf5ff; }
+  .card:hover{ transform: translateY(-8px) scale(1.01); box-shadow: 0 20px 60px rgba(2,8,20,0.6); }
+
+  .card-head{ display:flex; align-items:center; gap:12px; margin-bottom:8px; }
+  .icon{ width:52px; height:52px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:26px; background:linear-gradient(135deg,#6a9eff22,#00e6ff22); border:1px solid rgba(255,255,255,0.03); box-shadow: inset 0 -6px 18px rgba(0,0,0,0.12); }
+  .tag{ font-size:12px; padding:6px 8px; border-radius:8px; background:rgba(0,0,0,0.18); color:var(--accent); font-weight:700; margin-left:auto; }
+
+  .card-sub{ color:rgba(234,245,255,0.85); margin-bottom:10px; font-size:0.95rem; }
+
+  .skill-list{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px; }
+  .skill-row{ display:flex; justify-content:space-between; font-weight:700; font-size:0.92rem; margin-bottom:6px; color:rgba(234,245,255,0.9); }
+  .skill-bar{ height:8px; background:rgba(255,255,255,0.03); border-radius:8px; overflow:hidden; }
+  .skill-fill{ height:100%; background:linear-gradient(90deg,#00e6ff,#6a9eff); border-radius:8px; box-shadow:0 6px 18px rgba(0,230,255,0.08); }
+
+  .card-actions{ display:flex; justify-content:space-between; align-items:center; margin-top:12px; gap:12px; }
+  .learn-btn{ padding:8px 12px; border-radius:10px; border:none; background:linear-gradient(135deg,#00e6ff,#6a9eff); color:#001; font-weight:800; cursor:pointer; }
+  .chips{ display:flex; gap:8px; flex-wrap:wrap; }
+  .chip{ font-size:12px; padding:6px 8px; border-radius:8px; background:rgba(255,255,255,0.03); color:var(--accent); font-weight:700; }
+
+  /* Modal */
+  .exp-modal{ display:none; position:fixed; inset:0; background:rgba(2,6,10,0.6); z-index:2000; align-items:center; justify-content:center; padding:20px; }
+  .exp-modal-panel{ width:720px; max-width:100%; background:linear-gradient(180deg,#06121a,#08202a); color:var(--accent); border-radius:12px; padding:18px; box-shadow:0 40px 120px rgba(0,0,0,0.6); position:relative; }
+  .modal-close{ position:absolute; right:14px; top:12px; background:transparent;border:none;color:var(--accent); font-size:18px; cursor:pointer; }
+  .exp-modal h3{ margin-top:4px;margin-bottom:8px; color:#00e6ff; }
+  .exp-modal p{ opacity:0.9; margin-bottom:8px; }
+  .exp-modal ul{ margin-left:18px; }
+  .btn{ display:inline-block; padding:8px 14px; border-radius:8px; background:linear-gradient(135deg,#00e6ff,#6a9eff); color:#001; font-weight:800; text-decoration:none; }
+
+  @media(max-width:950px){ .expertise-grid{ grid-template-columns:repeat(2,1fr);} }
+  @media(max-width:620px){ .expertise-grid{ grid-template-columns:1fr;} .expertise-controls input{ min-width:100%; } }
+</style>
+
+<script>
+  // Search / filter logic (deep search)
+  const grid = document.getElementById('expertise-grid');
+  const cards = Array.from(grid.querySelectorAll('.expertise-card'));
+  const search = document.getElementById('expertise-search');
+  const filters = Array.from(document.querySelectorAll('.filter-btn'));
+
+  function normalize(s){ return (s||'').toString().toLowerCase(); }
+
+  function applyFilter(q, filterKey){
+    q = normalize(q);
+    cards.forEach(card=>{
+      const tags = normalize(card.dataset.tags);
+      const title = normalize(card.querySelector('h3').innerText);
+      const visible = (q === '' || title.includes(q) || tags.includes(q));
+      // filter key (ml/prog/iot/all)
+      let passesFilter = true;
+      if(filterKey && filterKey !== 'all'){
+        const map = {ml:'machine learning', prog:'programming', iot:'iot'};
+        passesFilter = tags.includes(map[filterKey]) || title.toLowerCase().includes(filterKey);
+      }
+      card.style.display = (visible && passesFilter) ? '' : 'none';
+    });
+  }
+
+  // search input
+  search.addEventListener('input', e => {
+    const q = e.target.value.trim();
+    // when user types, reset pressed states
+    filters.forEach(f => f.setAttribute('aria-pressed','false'));
+    applyFilter(q,'all');
+  });
+
+  // filter buttons
+  filters.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      filters.forEach(b=>b.setAttribute('aria-pressed','false'));
+      btn.setAttribute('aria-pressed','true');
+      const key = btn.dataset.filter;
+      const q = search.value.trim();
+      applyFilter(q, key);
+    });
+  });
+
+  // Modal details content
+  const modal = document.getElementById('exp-modal');
+  const modalTitle = document.getElementById('exp-modal-title');
+  const modalDesc = document.getElementById('exp-modal-desc');
+  const modalList = document.getElementById('exp-modal-list');
+  const modalLink = document.getElementById('exp-modal-link');
+  const modalClose = document.querySelector('.modal-close');
+
+  const DETAILS = {
+    ai: {
+      title: 'AI & Machine Learning — Deep Work',
+      desc: "Research and production expertise in modern computer vision and classical ML. I build Vision Transformer pipelines, tune Support Vector Machines, and integrate Explainable AI (SHAP/LIME) for transparency.",
+      bullets: [
+        "Vision Transformers: pretraining, fine-tuning, patching strategies",
+        "SVM & classical ML for small-data scenarios",
+        "Explainable AI: SHAP & LIME integration",
+        "Model evaluation: cross-validation, ROC-AUC, confusion matrices"
+      ],
+      link: "#"
+    },
+    prog: {
+      title: 'Programming Languages & Software Engineering',
+      desc: "Clean, maintainable code for embedded and web systems. Focus on readability, testing, and performance.",
+      bullets: [
+        "Python: scripting, data pipelines, ML tooling",
+        "Embedded C: microcontroller firmware, ISR handling",
+        "JavaScript: modern ES modules, async patterns, DOM & fetch",
+        "Software practices: version control, CI, unit testing"
+      ],
+      link: "#"
+    },
+    iot: {
+      title: 'Internet of Things & Embedded Systems',
+      desc: "End-to-end IoT development: sensors, microcontrollers, communication protocols and cloud integration.",
+      bullets: [
+        "Sensor integration: ultrasonic, LIDAR, environmental sensors",
+        "Protocols: MQTT, HTTP, serial bridges",
+        "Hardware: Arduino, ESP32, PCB basics",
+        "Edge computing: lightweight inference, power efficiency"
+      ],
+      link: "#"
+    }
+  };
+
+  // open modal with detail id
+  document.querySelectorAll('.learn-btn').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      const key = e.currentTarget.dataset.detail;
+      const info = DETAILS[key];
+      if(!info) return;
+      modalTitle.innerText = info.title;
+      modalDesc.innerText = info.desc;
+      modalList.innerHTML = '';
+      info.bullets.forEach(b=>{
+        const li = document.createElement('li'); li.innerText = b; modalList.appendChild(li);
+      });
+      modalLink.href = info.link;
+      modalLink.innerText = 'View related project or resources';
+      modal.style.display = 'flex';
+      modal.setAttribute('aria-hidden','false');
+      modal.querySelector('.exp-modal-panel').focus();
+    });
+  });
+
+  // close modal
+  modalClose.addEventListener('click', ()=> { modal.style.display='none'; modal.setAttribute('aria-hidden','true'); });
+  modal.addEventListener('click', (e)=> { if(e.target === modal) { modal.style.display='none'; modal.setAttribute('aria-hidden','true'); }});
+  document.addEventListener('keydown', (e)=> { if(e.key === 'Escape') { modal.style.display='none'; modal.setAttribute('aria-hidden','true'); } });
+
+  // keyboard focus: open card details when Enter pressed on card
+  cards.forEach(card=>{
+    card.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter') {
+        const btn = card.querySelector('.learn-btn');
+        if(btn) btn.click();
+      }
+    });
+  });
+
+</script>
+
+
+    <!-- Contact Section (black, white, blue theme) -->
+<section id="contact" class="section contact-section" aria-labelledby="contact-heading">
+  <div class="container">
+    <h2 id="contact-heading" class="contact-title">Contact Me</h2>
+    <div class="divider" aria-hidden="true"></div>
+
+    <div class="contact-grid">
+      <!-- Contact details card -->
+      <div class="contact-card" role="region" aria-label="Contact details">
+        <div class="contact-row">
+          <span class="icon" aria-hidden="true">📧</span>
+          <a class="contact-link" href="mailto:lewisanesu10@gmail.com">lewisanesu10@gmail.com</a>
+        </div>
+
+        <div class="contact-row">
+          <span class="icon" aria-hidden="true">📞</span>
+          <a class="contact-link" href="https://wa.me/919371787901" target="_blank" rel="noopener noreferrer">
+            +91 9371787901
+          </a>
+        </div>
+
+        <div class="contact-row muted">
+          <span class="icon" aria-hidden="true">🌍</span>
+          <span>Zimbabwean Engineer Based in India</span>
+        </div>
+
+        <div class="contact-actions" aria-hidden="true">
+          <a class="btn" href="mailto:lewisanesu10@gmail.com">Write an email</a>
+          <a class="btn ghost" href="https://wa.me/919371787901" target="_blank" rel="noopener noreferrer">Open WhatsApp</a>
+        </div>
+      </div>
+
+      <!-- Availability / short bio -->
+      <div class="contact-info" role="region" aria-label="Availability">
+        <p class="info-heading">Availability</p>
+        <p class="info-text">
+          Open to internships, collaborative research, and freelance engineering projects focused on
+          <strong>ML, Embedded Systems,</strong> and <strong>IoT</strong>.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  :root {
+    --bg: #0a0a0a; /* black background */
+    --card: rgba(255,255,255,0.05); /* subtle white card */
+    --muted: #aaa; /* muted gray */
+    --accent: #094989df; /* blue accent */
+    --glass-border: rgba(30,144,255,0.2);
+    --text: #fff; /* main text white */
+    --max-width: 1100px;
+  }
+
+  .contact-section {
+    background: var(--bg);
+    color: var(--text);
+    padding: 64px 20px;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
+
+  .container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+  }
+
+  .contact-title {
+    font-size: 2.25rem;
+    margin: 0 0 8px 0;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .divider {
+    height: 3px;
+    width: 140px;
+    border-radius: 6px;
+    background: var(--accent);
+    margin: 14px 0 26px 0;
+  }
+
+  .contact-grid {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .contact-card {
+    min-width: 280px;
+    max-width: 420px;
+    background: var(--card);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(6px) saturate(120%);
+    transition: transform .22s ease, box-shadow .22s ease;
+  }
+
+  .contact-card:focus-within,
+  .contact-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 20px var(--accent);
+  }
+
+  .contact-row {
+    display:flex;
+    gap:12px;
+    align-items:center;
+    margin-bottom:12px;
+    font-size:1rem;
+  }
+
+  .icon {
+    width:34px;
+    height:34px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:8px;
+    background: rgba(255,255,255,0.05);
+    font-size:18px;
+  }
+
+  .contact-link {
+    color: var(--text);
+    text-decoration:none;
+    font-weight:600;
+    word-break:break-all;
+  }
+
+  .contact-row.muted {
+    color: var(--muted);
+    font-weight:500;
+    margin-top:6px;
+  }
+
+  .contact-actions {
+    margin-top:18px;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+
+  .btn {
+    display:inline-block;
+    padding:10px 14px;
+    border-radius:10px;
+    background: var(--accent);
+    color:#fff;
+    font-weight:700;
+    text-decoration:none;
+    box-shadow: 0 8px 24px rgba(30,144,255,0.3);
+    transition: transform .18s ease;
+  }
+
+  .btn:hover { transform: translateY(-4px); }
+
+  .btn.ghost {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    box-shadow: none;
+  }
+
+  .contact-info {
+    flex:1;
+    min-width:240px;
+    color: #fff;
+    padding: 6px 2px;
+  }
+
+  .info-heading {
+    margin:0 0 8px 0;
+    font-weight:700;
+    color: var(--accent);
+    font-size:1rem;
+  }
+
+  .info-text {
+    margin:0;
+    line-height:1.6;
+    color: var(--text);
+    opacity:0.95;
+  }
+
+  @media (max-width:720px){
+    .contact-grid { flex-direction: column; }
+    .contact-card { width:100%; }
+  }
+
+</style>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+      <div>@ <strong> Engineer Lewis Anesushe Verengera</strong> — 2025</div>
+      <div style="color:var(--muted)"><div id="tagline"><b>WHERE INNOVATION MEETS PASSION</b></div></div>
+</div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT: Typewriter, Smooth scroll, Nav active, Reveal on scroll -->
+  <script>
+    // -------------------------
+    // Typewriter (small, minimal)
+    // -------------------------
+    (function(){
+      const phrases = [
+        "Machine Learning • Vision Transformers • IoT",
+        "Embedded Systems • Smart Automation",
+        "Support Vector Machines • Research",
+        "Building Reliable Intelligent Systems"
+      ];
+      const el = document.getElementById('typewriter');
+      let pi = 0, ci = 0, forward = true;
+
+      function tick(){
+        const text = phrases[pi];
+        if(forward){
+          ci++;
+          el.textContent = text.slice(0,ci);
+          if(ci === text.length){
+            forward = false;
+            setTimeout(tick, 1000);
+            return;
+          }
+        } else {
+          ci--;
+          el.textContent = text.slice(0,ci);
+          if(ci === 0){
+            forward = true;
+            pi = (pi+1) % phrases.length;
+          }
+        }
+        setTimeout(tick, forward ? 50 : 24);
+      }
+      tick();
+    })();
+
+    // -------------------------
+    // Smooth scroll + nav activation
+    // -------------------------
+    (function(){
+      const navButtons = document.querySelectorAll('.nav-btn');
+      function scrollToId(id){
+        const el = document.getElementById(id);
+        if(!el) return;
+        window.scrollTo({
+          top: el.getBoundingClientRect().top + window.pageYOffset - 84, // account for fixed header
+          behavior: 'smooth'
+        });
+      }
+      navButtons.forEach(btn=>{
+        btn.addEventListener('click', ()=> {
+          navButtons.forEach(b=>b.classList.remove('active'));
+          btn.classList.add('active');
+          scrollToId(btn.dataset.target);
+        });
+      });
+
+      // update active on scroll (intersection observer)
+      const sections = document.querySelectorAll('main section, section#home');
+      const obsOptions = { root:null, threshold: 0.45 };
+      const observer = new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting){
+            const id = entry.target.id;
+            document.querySelectorAll('.nav-btn').forEach(b=>{
+              b.classList.toggle('active', b.dataset.target === id);
+            });
+          }
+        });
+      }, obsOptions);
+      sections.forEach(s => observer.observe(s));
+    })();
+
+    // -------------------------
+    // Scroll reveal for elements with .reveal
+    // -------------------------
+    (function(){
+      const reveals = document.querySelectorAll('.reveal');
+      const rObs = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting) {
+            e.target.classList.add('visible');
+            rObs.unobserve(e.target);
+          }
+        });
+      }, {root:null, threshold:0.12});
+      reveals.forEach(r=> rObs.observe(r));
+    })();
+
+    // -------------------------
+    // Accessibility: keyboard nav for nav buttons
+    // -------------------------
+    (function(){
+      document.addEventListener('keydown', (e)=>{
+        if(e.key === 'Home') window.scrollTo({top:0, behavior:'smooth'});
+      });
+    })();
+
+    // -------------------------
+    // KEEP WELCOME JUST UNTIL REFRESH (animation handles hide)
+    // -------------------------
+    // (No localStorage used — it will reappear after a refresh as you requested originally)
+    // -------------------------
+
+  </script>
+</body>
+<!-- ================= FULL FEATURE CHATBOT WIDGET (DROP IN) ================= -->
+<style>
+  /* Container + button */
+  #chat-widget-btn{
+    position:fixed; bottom:20px; right:20px;
+    width:64px; height:64px; border-radius:50%;
+    background:linear-gradient(135deg,#00e6ff, #6a9eff);
+    display:flex; align-items:center; justify-content:center;
+    color:#001; font-size:28px; cursor:pointer; z-index:99999;
+    box-shadow:0 10px 30px rgba(0,0,0,0.35), 0 0 18px rgba(106,158,255,0.18);
+    border:1px solid rgba(255,255,255,0.12);
+    transition: transform .15s ease;
+  }
+  #chat-widget-btn:hover{ transform: scale(1.06); }
+
+  /* Chat window */
+  #chat-widget {
+    position:fixed; right:20px; bottom:100px;
+    width:360px; max-width:calc(100% - 40px);
+    height:520px; max-height:80vh;
+    background:var(--chat-bg,#08121a);
+    color:var(--chat-fg,#eaf5ff);
+    border-radius:14px; overflow:hidden;
+    display:none; flex-direction:column; z-index:99999;
+    box-shadow: 0 18px 60px rgba(2,8,20,0.6);
+    border:1px solid rgba(255,255,255,0.035);
+    font-family: Inter, Roboto, Arial, sans-serif;
+  }
+
+  /* Header */
+  #chat-head {
+    display:flex; align-items:center; gap:10px;
+    padding:12px 14px; background:linear-gradient(90deg, rgba(0,0,0,0.08), rgba(255,255,255,0.02));
+    backdrop-filter: blur(6px);
+  }
+  #ai-avatar {
+    width:44px; height:44px; border-radius:10px;
+    background: linear-gradient(135deg,#6a9eff,#00e6ff);
+    display:flex; align-items:center; justify-content:center;
+    box-shadow: 0 6px 22px rgba(106,158,255,0.18), inset 0 -6px 12px rgba(0,0,0,0.08);
+    transform: translateZ(0);
+  }
+  #ai-avatar .core {
+    width:26px; height:26px; border-radius:6px;
+    background: linear-gradient(180deg,#fff,#dff6ff);
+    box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+    filter: drop-shadow(0 0 8px rgba(0,230,255,0.25));
+  }
+  #chat-title { font-weight:700; font-size:14px; color:var(--chat-fg); flex:1; }
+  #chat-controls { display:flex; gap:8px; align-items:center; }
+
+  .control-btn {
+    background:transparent; border:none; color:var(--chat-fg);
+    padding:6px; cursor:pointer; border-radius:8px;
+  }
+  .control-btn:hover{ background: rgba(255,255,255,0.02); }
+
+  /* messages */
+  #chat-body { flex:1; padding:12px; overflow:auto; display:flex; flex-direction:column; gap:8px; }
+  .msg { max-width:82%; padding:10px 12px; border-radius:12px; font-size:0.95rem; line-height:1.25; }
+  .msg.bot { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); color:var(--chat-fg); align-self:flex-start; }
+  .msg.user { background: linear-gradient(180deg,#00c3ff,#00a0ff); color:#001; align-self:flex-end; }
+
+  /* typing indicator */
+  .typing { display:inline-block; width:54px; text-align:left; }
+  .dot { display:inline-block; width:8px; height:8px; margin-right:6px; background:#8fe6ff; border-radius:50%; opacity:0.9; animation: blink 1s infinite; }
+  .dot:nth-child(2){ animation-delay: .12s } .dot:nth-child(3){ animation-delay: .24s }
+  @keyframes blink { 0%,80%,100%{ opacity:.08 } 40%{ opacity:1 } }
+
+  /* input area */
+  #chat-input { display:flex; gap:8px; padding:10px; border-top:1px solid rgba(255,255,255,0.03); background: linear-gradient(180deg, rgba(0,0,0,0.02), rgba(255,255,255,0.001)); }
+  #chat-input input { flex:1; padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.03); background:transparent; color:var(--chat-fg); outline:none; font-size:0.95rem; }
+  #chat-input button { padding:10px 12px; border-radius:10px; border:none; cursor:pointer; background:linear-gradient(135deg,#00e6ff,#6a9eff); color:#001; font-weight:700; }
+
+  /* small settings area */
+  #chat-settings { display:flex; gap:8px; padding:8px 12px; align-items:center; border-top:1px solid rgba(255,255,255,0.02); background: rgba(0,0,0,0.02); font-size:0.85rem; color:var(--chat-fg); }
+  #chat-settings label { display:flex; gap:6px; align-items:center; cursor:pointer; }
+
+  /* fullscreen style */
+  #chat-widget.fullscreen { width:100vw; height:100vh; right:0; bottom:0; border-radius:0; max-height:none; max-width:none; }
+
+  /* dark/light themes */
+  :root { --chat-bg-dark:#08121a; --chat-fg-dark:#eaf5ff; --chat-bg-light:#ffffff; --chat-fg-light:#07121a; }
+  .light-theme { --chat-bg:var(--chat-bg-light); --chat-fg:var(--chat-fg-light); }
+  .dark-theme  { --chat-bg:var(--chat-bg-dark); --chat-fg:var(--chat-fg-dark); }
+
+  /* responsive */
+  @media(max-width:420px){
+    #chat-widget { width:92%; right:4%; bottom:88px; }
+    #chat-widget.fullscreen { padding-top:48px; }
+  }
+</style>
+
+<!-- WIDGET HTML -->
+<div id="chat-widget-btn" title="Chat with Lewis">💬</div>
+
+<div id="chat-widget" class="dark-theme" aria-hidden="true" role="dialog" aria-label="Chatbot">
+  <div id="chat-head">
+    <div id="ai-avatar" aria-hidden="true"><div class="core"></div></div>
+    <div id="chat-title">Lewis' AI Assistant</div>
+    <div id="chat-controls">
+      <button id="mode-toggle" class="control-btn" title="Dark / Light">🌗</button>
+      <button id="fs-toggle" class="control-btn" title="Toggle Fullscreen">⛶</button>
+      <button id="minimize" class="control-btn" title="Close">✖</button>
+    </div>
+  </div>
+
+  <div id="chat-body" aria-live="polite" role="log"></div>
+
+  <div id="chat-input">
+    <input id="chat-text" type="text" placeholder="Ask about Lewis, projects, skills… or speak with mic" aria-label="Chat input">
+    <button id="mic-btn" title="Voice input (press)">🎤</button>
+    <button id="send-btn" title="Send message">Send</button>
+  </div>
+
+  <div id="chat-settings">
+    <label><input id="use-api" type="checkbox"> Use API</label>
+    <button id="api-config-btn" class="control-btn" title="API config">⚙️</button>
+    <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+      <button id="clear-chat" class="control-btn" title="Clear">🗑️</button>
+      <div style="font-size:0.82rem;color:inherit;opacity:0.9">Voice: <span id="voice-status">on</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- API CONFIG MODAL (simple prompt) -->
+<div id="api-config-modal" style="display:none; position:fixed; right:22px; bottom:640px; z-index:100000; background: #02101a; color:#dff6ff; padding:12px; border-radius:10px; box-shadow:0 10px 40px rgba(0,0,0,0.6); width:320px;">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+    <strong>API Configuration</strong>
+    <button id="close-api-config" style="background:transparent;border:none;color:#dff6ff;cursor:pointer">✖</button>
+  </div>
+  <div style="font-size:0.85rem;color:#cceeff;margin-bottom:8px">Paste your OpenAI API key here to enable real responses (optional).</div>
+  <input id="api-key-input" type="password" placeholder="sk-..." style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit;margin-bottom:8px">
+  <select id="model-select" style="width:100%;padding:8px;border-radius:8px;margin-bottom:8px;background:transparent;color:inherit">
+    <option value="gpt-4o-mini">gpt-4o-mini</option>
+    <option value="gpt-4o">gpt-4o</option>
+    <option value="gpt-4o-mini-tts">gpt-4o-mini-tts</option>
+  </select>
+  <div style="display:flex;gap:8px">
+    <button id="save-api" style="flex:1;padding:8px;border-radius:8px;border:none;background:linear-gradient(135deg,#00e6ff,#6a9eff);color:#001;font-weight:700;cursor:pointer">Save</button>
+    <button id="clear-api" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit;cursor:pointer">Clear</button>
+  </div>
+  <div style="font-size:0.8rem;opacity:0.8;margin-top:8px">No key? Keep Use API unchecked — the widget will use local/simulated replies.</div>
+</div>
+
+<script>
+/* -------------------------
+   Widget state + elements
+   ------------------------- */
+const btn = document.getElementById('chat-widget-btn');
+const widget = document.getElementById('chat-widget');
+const body = document.getElementById('chat-body');
+const textIn = document.getElementById('chat-text');
+const sendBtn = document.getElementById('send-btn');
+const micBtn = document.getElementById('mic-btn');
+const minimize = document.getElementById('minimize');
+const fsToggle = document.getElementById('fs-toggle');
+const modeToggle = document.getElementById('mode-toggle');
+const useApiCheckbox = document.getElementById('use-api');
+const apiConfigBtn = document.getElementById('api-config-btn');
+const apiModal = document.getElementById('api-config-modal');
+const apiClose = document.getElementById('close-api-config');
+const apiKeyInput = document.getElementById('api-key-input');
+const saveApiBtn = document.getElementById('save-api');
+const clearApiBtn = document.getElementById('clear-api');
+const modelSelect = document.getElementById('model-select');
+const clearChatBtn = document.getElementById('clear-chat');
+const voiceStatusEl = document.getElementById('voice-status');
+
+let isOpen = false;
+let recognition = null;
+let usingApi = false;
+let apiKey = '';
+let model = modelSelect.value;
+let voiceEnabled = true;
+
+/* local simulated bot knowledge base (can be extended) */
+const KB = [
+  {q: /who are you/i, a: "I'm Engineer Lewis' assistant , I help explain projects, skills and contact details."},
+  {q: /projects?/i, a: "Lewis built a Smart Parking Assistant, Automated Smart Bin, Self-Parking Car, and an ML-based early breast cancer detection pipeline."},
+  {q: /skills?/i, a: "Skills: Machine Learning, Vision Transformers, SVM, IoT/Embedded Systems, Python, Java, JavaScript."},
+  {q: /contact/i, a: "Email: lewisanesu10@gmail.com | WhatsApp: +91 9371787901"},
+  {q: /where are you/i, a: "Lewis is a Zimbabwean Computer Engineer currently based in India."},
+];
+
+/* -------------------------
+   UI helpers
+   ------------------------- */
+function openWidget(){
+  widget.style.display = 'flex';
+  widget.setAttribute('aria-hidden','false');
+  isOpen = true;
+  textIn.focus();
+}
+function closeWidget(){ widget.style.display = 'none'; widget.setAttribute('aria-hidden','true'); isOpen=false; }
+btn.addEventListener('click', ()=> isOpen ? closeWidget() : openWidget());
+minimize.addEventListener('click', closeWidget);
+
+/* toggle fullscreen */
+fsToggle.addEventListener('click', ()=>{
+  widget.classList.toggle('fullscreen');
+});
+
+/* dark/light toggle */
+modeToggle.addEventListener('click', ()=>{
+  if(widget.classList.contains('light-theme')){ widget.classList.remove('light-theme'); widget.classList.add('dark-theme'); }
+  else { widget.classList.remove('dark-theme'); widget.classList.add('light-theme'); }
+});
+
+/* open API configuration */
+apiConfigBtn.addEventListener('click', ()=> apiModal.style.display = 'block');
+apiClose.addEventListener('click', ()=> apiModal.style.display = 'none');
+
+/* save / clear API key (stored in memory only) */
+saveApiBtn.addEventListener('click', ()=>{
+  apiKey = apiKeyInput.value.trim();
+  model = modelSelect.value;
+  if(apiKey) {
+    useApiCheckbox.checked = true; usingApi = true;
+    alert('API key saved in memory for this session. Use API checked.');
+    apiModal.style.display = 'none';
+  } else {
+    alert('Enter a valid API key or leave empty to use local replies.');
+  }
+});
+clearApiBtn.addEventListener('click', ()=>{
+  apiKeyInput.value = ''; apiKey = ''; useApiCheckbox.checked = false; usingApi = false;
+  alert('API cleared.');
+});
+
+/* toggle checkbox directly updates usingApi */
+useApiCheckbox.addEventListener('change', (e)=>{
+  usingApi = e.target.checked && apiKey !== '';
+  if(e.target.checked && !apiKey){
+    alert('No API key found. Open API config and paste your key, or uncheck Use API.');
+    usingApi = false; e.target.checked = false;
+  }
+});
+
+/* clear chat */
+clearChatBtn.addEventListener('click', ()=> { body.innerHTML=''; });
+
+/* -------------------------
+   Output helpers (typing, messages, TTS)
+   ------------------------- */
+function appendUser(text){
+  const d = document.createElement('div'); d.className = 'msg user'; d.innerText = text;
+  body.appendChild(d); body.scrollTop = body.scrollHeight;
+}
+function appendBot(text, withTyping=false){
+  if(withTyping){
+    const d = document.createElement('div'); d.className='msg bot';
+    const typing = document.createElement('span'); typing.className='typing';
+    typing.innerHTML = '<span class="dot"></span><span class="dot"></span><span class="dot"></span>';
+    d.appendChild(typing); body.appendChild(d); body.scrollTop = body.scrollHeight;
+    return d; // return element to replace later
+  } else {
+    const d = document.createElement('div'); d.className='msg bot'; d.innerText = text;
+    body.appendChild(d); body.scrollTop = body.scrollHeight;
+    if(voiceEnabled) speakText(text);
+  }
+}
+
+/* typing animation + show final reply */
+async function showBotResponse(finalText, delay=700){
+  const temp = appendBot('', true);
+  // keep typing animation for a bit and reveal progressively
+  await new Promise(r => setTimeout(r, delay));
+  temp.remove();
+  appendBot(finalText, false);
+}
+
+/* simple TTS */
+function speakText(text){
+  if(!('speechSynthesis' in window)) return;
+  const ut = new SpeechSynthesisUtterance(text);
+  // choose voice if available
+  const voices = speechSynthesis.getVoices();
+  if(voices && voices.length) ut.voice = voices.find(v => /en|english/i.test(v.lang)) || voices[0];
+  ut.rate = 1; ut.pitch = 1;
+  speechSynthesis.cancel();
+  speechSynthesis.speak(ut);
+}
+
+/* -------------------------
+   Voice input (Web Speech API)
+   ------------------------- */
+micBtn.addEventListener('click', ()=>{
+  // start a short listening session (toggle start/stop)
+  if(!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)){
+    alert('Voice input not supported in this browser.');
+    return;
+  }
+  // create recognition if not exist
+  const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!recognition){
+    recognition = new SpeechRec();
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+    recognition.onresult = (e)=>{
+      const spoken = e.results[0][0].transcript;
+      textIn.value = spoken;
+      sendMessage(); // auto send
+    };
+    recognition.onerror = (e)=> { console.log('Speech error', e); alert('Speech recognition error'); };
+    recognition.onend = ()=> { micBtn.innerText = '🎤'; };
+  }
+  // start recognition
+  micBtn.innerText = '⏳';
+  recognition.start();
+});
+
+/* -------------------------
+   Message sending + response logic
+   ------------------------- */
+async function sendMessage(){
+  const txt = textIn.value.trim();
+  if(!txt) return;
+  appendUser(txt);
+  textIn.value = '';
+  // if use API and key present, call OpenAI
+  if(usingApi && apiKey){
+    // show typing
+    const tempEl = appendBot('', true);
+    try {
+      const payload = {
+        model: model,
+        messages: [{role:'user', content: txt}],
+        max_tokens: 700,
+      };
+      // call OpenAI (CORS note: your hosting must allow calls, or route via your server)
+      const res = await fetch('https://api.openai.com/v1/chat/completions', {
+        method:'POST', headers:{
+          'Content-Type':'application/json',
+          'Authorization': 'Bearer ' + apiKey
+        }, body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      tempEl.remove();
+      const reply = (data?.choices?.[0]?.message?.content) ? data.choices[0].message.content.trim() : 'Sorry — no response from API.';
+      appendBot(reply, false);
+    } catch(err){
+      console.error(err);
+      tempEl.remove();
+      appendBot('Error calling API. Using local fallback.', false);
+      // fallback to local response
+      const local = localReply(txt);
+      await showBotResponse(local, 900);
+    }
+    return;
+  }
+
+  // Local (simulated) responses using KB and simple heuristics
+  const matched = KB.find(k => k.q.test(txt));
+  if(matched){
+    await showBotResponse(matched.a, 700);
+    return;
+  }
+
+  // If contains question words -> give helpful structured reply
+  if(/\b(what|how|why|where|when|who)\b/i.test(txt)){
+    const answer = "Good question. I don't have API access right now; here's a helpful starting point: ask about Lewis' projects, skills or contact. For detailed answers, enable API and paste your key in settings.";
+    await showBotResponse(answer, 900);
+    return;
+  }
+
+  // Fallback fun reply
+  const fallback = "Nice! I can help with projects, skills, contact info, or enable real AI via API in the settings.";
+  await showBotResponse(fallback, 700);
+}
+
+/* send on click / enter */
+sendBtn.addEventListener('click', sendMessage);
+textIn.addEventListener('keydown', e => { if(e.key === 'Enter') sendMessage(); });
+
+/* a tiny helper local reply if API fails */
+function localReply(txt){
+  const m = KB.find(k => k.q.test(txt));
+  return m ? m.a : "I can answer basics offline. To get smarter answers enable the API and paste a key in settings.";
+}
+
+/* voice output toggle + display */
+voiceEnabled = true;
+voiceStatusEl.innerText = voiceEnabled ? 'on' : 'off';
+
+/* accessibility: focus when widget opens */
+btn.addEventListener('click', ()=> setTimeout(()=> textIn.focus(), 200));
+
+/* preload voices (some browsers load asynchronously) */
+if('speechSynthesis' in window){
+  speechSynthesis.onvoiceschanged = ()=> speechSynthesis.getVoices();
+}
+
+/* small UX: welcome message on first open */
+let welcomed = false;
+btn.addEventListener('click', ()=> {
+  if(!welcomed && widget.style.display === 'flex') {
+    appendBot(
+      "Hello! I am Engineer Lewis’ virtual assistant. Feel free to ask about his projects, skills, portfolio, or contact information. I am here to assist you in every way possible. For more detailed inquiries or professional communication, you are encouraged to reach out to him directly via WhatsApp or email.",
+      false
+    );
+    welcomed = true;
+  }
+});
+
+/* show a quick tip when using API toggle without key */
+useApiCheckbox.addEventListener('click', ()=>{
+  if(useApiCheckbox.checked && !apiKey){
+    alert('No API key stored. Click ⚙️ to paste your OpenAI API key (session-only). If you prefer not to use API, uncheck Use API.');
+    useApiCheckbox.checked = false;
+  }
+});
+
+/* safety: do not persist key to storage in this demo (kept in memory only) */
+/* To use API persistently, implement a secure server-side proxy and never expose keys in client code. */
+</script>
+<!-- ================= END CHATBOT WIDGET ================= -->
+
+</html>
