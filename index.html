@@ -95,6 +95,18 @@
       gap:18px;
       align-items:center;
     }
+    .mobile-toggle{
+      display:none;
+      background:transparent;
+      border:0;
+      color:var(--accent);
+      font-size:1.6rem;
+      padding:10px 12px;
+      border-radius:12px;
+      cursor:pointer;
+      width:48px; height:48px; display:inline-flex; align-items:center; justify-content:center;
+      transition: transform .12s ease;
+    }
     .navlinks button{
       background:transparent;
       border:0;
@@ -276,7 +288,32 @@
       .subtitle{ font-size:.95rem; height:22px; }
       .profile-box{ width:220px; height:260px;}
       .navbar{padding:12px 16px}
-      .navlinks{display:none} /* simplified for very small screens */
+      /* mobile: hide inline nav, show toggle button; when open, navlinks become a dropdown */
+      .mobile-toggle{ display:block }
+      .navlinks{ display:none }
+      .navlinks.open{
+        display:flex;
+        position:absolute;
+        top: calc(100% + 8px);
+        right:16px;
+        width: calc(100% - 32px);
+        flex-direction:column;
+        gap:12px;
+        background: linear-gradient(180deg, rgba(5,7,10,0.98), rgba(5,7,10,0.92));
+        padding:10px;
+        border-radius:12px;
+        border:1px solid rgba(255,255,255,0.04);
+        box-shadow: 0 20px 60px rgba(2,8,20,0.6);
+        z-index:1100;
+        transform-origin: top right;
+        animation: slideDown .28s cubic-bezier(.2,.9,.25,1) both;
+      }
+      .navlinks.open button{ padding:14px 16px; width:100%; text-align:left; font-size:1rem; min-height:48px; border-radius:8px; }
+      .mobile-toggle:active{ transform: scale(.98) }
+      @keyframes slideDown{
+        0%{ opacity:0; transform: translateY(-6px) scale(.98); }
+        100%{ opacity:1; transform:none; }
+      }
     }
 
     /* small neat accent for section separators */
@@ -319,6 +356,8 @@
   <header class="site-header" role="banner" aria-label="Main header">
     <div class="navbar wrap">
       <div class="brand">LEWIS ANESUSHE VERENGERA | COMPUTER ENGINEER</div>
+
+      <button id="mobile-nav-toggle" class="mobile-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
 
       <nav aria-label="Primary navigation" class="navlinks">
         <button data-target="home" class="nav-btn active">Home</button>
@@ -954,8 +993,10 @@
       function scrollToId(id){
         const el = document.getElementById(id);
         if(!el) return;
+        const headerEl = document.querySelector('.site-header');
+        const headerOffset = headerEl ? headerEl.offsetHeight : 84;
         window.scrollTo({
-          top: el.getBoundingClientRect().top + window.pageYOffset - 84, // account for fixed header
+          top: el.getBoundingClientRect().top + window.pageYOffset - headerOffset, // account for fixed header height
           behavior: 'smooth'
         });
       }
@@ -981,6 +1022,79 @@
         });
       }, obsOptions);
       sections.forEach(s => observer.observe(s));
+    })();
+
+    // -------------------------
+    // Mobile nav toggle (hamburger)
+    // -------------------------
+    (function(){
+      const toggle = document.getElementById('mobile-nav-toggle');
+      const nav = document.querySelector('.navlinks');
+      if(!toggle || !nav) return;
+
+      const focusableSelector = 'button, a[href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+      let lastFocused = null;
+
+      function openMenu(){
+        nav.classList.add('open');
+        toggle.setAttribute('aria-expanded','true');
+        // save previously focused element and move focus into first nav item
+        lastFocused = document.activeElement;
+        const first = nav.querySelector(focusableSelector);
+        if(first) first.focus();
+        // prevent body scroll while menu open on small screens
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeMenu(){
+        if(!nav.classList.contains('open')) return;
+        nav.classList.remove('open');
+        toggle.setAttribute('aria-expanded','false');
+        document.body.style.overflow = '';
+        if(lastFocused) lastFocused.focus();
+      }
+
+      toggle.addEventListener('click', (e)=>{
+        e.stopPropagation();
+        if(nav.classList.contains('open')) closeMenu(); else openMenu();
+      });
+
+      // close mobile menu when a nav button is clicked
+      nav.querySelectorAll('button').forEach(b=> b.addEventListener('click', ()=>{
+        closeMenu();
+      }));
+
+      // close when clicking outside
+      document.addEventListener('click', (ev)=>{
+        if(!nav.contains(ev.target) && !toggle.contains(ev.target)){
+          closeMenu();
+        }
+      });
+
+      // close on Escape and trap focus inside menu when open
+      document.addEventListener('keydown', (e)=>{
+        if(!nav.classList.contains('open')) return;
+        if(e.key === 'Escape') { closeMenu(); }
+        if(e.key === 'Tab'){
+          const focusables = Array.from(nav.querySelectorAll(focusableSelector)).filter(el=> !el.hasAttribute('disabled'));
+          if(focusables.length === 0) { e.preventDefault(); return; }
+          const first = focusables[0];
+          const last = focusables[focusables.length-1];
+          if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+          else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+        }
+      });
+
+      // auto-close on orientation change, scroll, or resize (improves mobile behavior)
+      const autoClose = ()=> { if(nav.classList.contains('open')) closeMenu(); };
+      window.addEventListener('orientationchange', autoClose, {passive:true});
+      window.addEventListener('resize', autoClose, {passive:true});
+      // small debounce for scroll to avoid closing during small adjustments
+      let scrollTimer = null;
+      window.addEventListener('scroll', ()=>{
+        if(scrollTimer) clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(()=>{ autoClose(); scrollTimer = null; }, 150);
+      }, {passive:true});
     })();
 
     // -------------------------
