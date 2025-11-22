@@ -18,6 +18,17 @@
       --radius: 14px;
     }
 
+    /* Light theme override when `[data-theme="light"]` is set on <html> */
+    :root[data-theme="light"]{
+      --bg-dark: #f6f9fb;
+      --panel-dark: #ffffff;
+      --muted: #334a53;
+      --accent: #071018;
+      --glow: rgba(20,40,80,0.06);
+      --glass: rgba(0,0,0,0.02);
+      --card-border: rgba(6,22,34,0.06);
+    }
+
     *{box-sizing:border-box}
     html,body{height:100%;}
     body{
@@ -314,6 +325,10 @@
         0%{ opacity:0; transform: translateY(-6px) scale(.98); }
         100%{ opacity:1; transform:none; }
       }
+      /* improved mobile spacing */
+      .hero-inner{ padding:28px 14px; gap:20px; }
+      .intro p.lead{ font-size:1rem; max-width:52ch; }
+      .navlinks.open{ right:10px; left:10px; width:auto; }
     }
 
     /* small neat accent for section separators */
@@ -323,6 +338,34 @@
   </style>
 </head>
 <body>
+
+  <style>
+    /* Full-screen particle canvas (replaces static blobs) */
+    #particles-canvas{ position:fixed; inset:0; width:100%; height:100%; z-index:40; pointer-events:none; display:block; }
+
+    /* subtle animated hero gradient overlay */
+    .hero::before{
+      content:''; position:absolute; inset:0; z-index:-1; border-radius:0; pointer-events:none;
+      background: linear-gradient(120deg, rgba(0,230,255,0.04), rgba(106,158,255,0.03));
+      mix-blend-mode: overlay; animation: heroShift 14s ease-in-out infinite alternate;
+    }
+    @keyframes heroShift{ 0%{ filter: hue-rotate(0deg) saturate(.9) } 100%{ filter: hue-rotate(30deg) saturate(1.05) } }
+
+    /* site toggle + back-to-top */
+    #site-theme-toggle{ background:linear-gradient(135deg,#00e6ff, #6a9eff); color:#001; border-radius:10px; width:44px; height:44px; display:inline-flex; align-items:center; justify-content:center; font-size:18px; margin-left:6px; border:1px solid rgba(255,255,255,0.06); }
+    /* theme icon states */
+    #site-theme-toggle .sun-hidden { opacity:0; transform: scale(.6); }
+    #site-theme-toggle.light #sun { transform: scale(0.6); opacity:0 }
+    #site-theme-toggle.light #moon { transform: scale(1); opacity:1 }
+    #site-theme-toggle:not(.light) #sun { transform: scale(1); opacity:1 }
+    #site-theme-toggle:not(.light) #moon { transform: scale(.6); opacity:0 }
+    #back-to-top{ position:fixed; right:18px; bottom:24px; width:54px; height:54px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#00e6ff,#6a9eff); color:#001; border:none; cursor:pointer; box-shadow:0 12px 36px rgba(0,0,0,0.35); z-index:9999; opacity:0; transform: translateY(8px); transition: opacity .22s ease, transform .22s ease; }
+    #back-to-top.show{ opacity:1; transform:none }
+    @media (prefers-reduced-motion: reduce){ #back-to-top{ transition:none } }
+    @media (max-width:420px){ #particles-canvas{ display:none } }
+  </style>
+
+  <canvas id="particles-canvas" aria-hidden="true"></canvas>
 
   <!-- WELCOME (auto disappears until refresh) -->
   <!-- Import a modern font -->
@@ -358,6 +401,27 @@
       <div class="brand">LEWIS ANESUSHE VERENGERA | COMPUTER ENGINEER</div>
 
       <button id="mobile-nav-toggle" class="mobile-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
+      <button id="site-theme-toggle" class="mobile-toggle" aria-label="Toggle theme" title="Toggle theme" aria-pressed="false">
+        <!-- Animated sun / moon SVG -->
+        <svg id="theme-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <g id="sun" style="transition: transform .35s ease, opacity .35s ease; transform-origin: center;">
+            <circle cx="12" cy="12" r="4" fill="#fff" />
+            <g stroke="#fff" stroke-width="1.2" stroke-linecap="round">
+              <line x1="12" y1="1.8" x2="12" y2="4.6" />
+              <line x1="12" y1="19.4" x2="12" y2="22.2" />
+              <line x1="1.8" y1="12" x2="4.6" y2="12" />
+              <line x1="19.4" y1="12" x2="22.2" y2="12" />
+              <line x1="4.5" y1="4.5" x2="6.3" y2="6.3" />
+              <line x1="17.7" y1="17.7" x2="19.5" y2="19.5" />
+              <line x1="4.5" y1="19.5" x2="6.3" y2="17.7" />
+              <line x1="17.7" y1="6.3" x2="19.5" y2="4.5" />
+            </g>
+          </g>
+          <g id="moon" style="opacity:0; transform: scale(.5) translateX(2px); transition: transform .35s ease, opacity .35s ease; transform-origin: center;">
+            <path d="M21 12.8A8.8 8.8 0 1 1 11.2 3 6.4 6.4 0 0 0 21 12.8z" fill="#fff" />
+          </g>
+        </svg>
+      </button>
 
       <nav aria-label="Primary navigation" class="navlinks">
         <button data-target="home" class="nav-btn active">Home</button>
@@ -434,21 +498,21 @@
             <span class="skill-name">Vision Transformers</span>
             <span class="skill-level">85%</span>
           </div>
-          <div class="skill-bar"><div class="skill-fill" style="width:85%"></div></div>
+          <div class="skill-bar"><div class="skill-fill" data-level="85%"></div></div>
         </li>
         <li>
           <div class="skill-row">
             <span class="skill-name">Support Vector Machines</span>
             <span class="skill-level">82%</span>
           </div>
-          <div class="skill-bar"><div class="skill-fill" style="width:82%"></div></div>
+          <div class="skill-bar"><div class="skill-fill" data-level="82%"></div></div>
         </li>
         <li>
           <div class="skill-row">
             <span class="skill-name">Deep Learning</span>
             <span class="skill-level">78%</span>
           </div>
-          <div class="skill-bar"><div class="skill-fill" style="width:78%"></div></div>
+          <div class="skill-bar"><div class="skill-fill" data-level="78%"></div></div>
         </li>
       </ul>
 
@@ -478,21 +542,21 @@
             <span class="skill-name">Python</span>
             <span class="skill-level">92%</span>
           </div>
-          <div class="skill-bar"><div class="skill-fill" style="width:92%"></div></div>
+          <div class="skill-bar"><div class="skill-fill" data-level="92%"></div></div>
         </li>
         <li>
           <div class="skill-row">
             <span class="skill-name">Embedded C</span>
             <span class="skill-level">80%</span>
           </div>
-          <div class="skill-bar"><div class="skill-fill" style="width:80%"></div></div>
+          <div class="skill-bar"><div class="skill-fill" data-level="80%"></div></div>
         </li>
         <li>
           <div class="skill-row">
             <span class="skill-name">JavaScript (Frontend)</span>
             <span class="skill-level">76%</span>
           </div>
-          <div class="skill-bar"><div class="skill-fill" style="width:76%"></div></div>
+          <div class="skill-bar"><div class="skill-fill" data-level="76%"></div></div>
         </li>
       </ul>
 
@@ -522,21 +586,21 @@
             <span class="skill-name">Arduino / Embedded</span>
             <span class="skill-level">88%</span>
           </div>
-          <div class="skill-bar"><div class="skill-fill" style="width:88%"></div></div>
+          <div class="skill-bar"><div class="skill-fill" data-level="88%"></div></div>
         </li>
         <li>
           <div class="skill-row">
             <span class="skill-name">IoT Sensors & Protocols</span>
             <span class="skill-level">80%</span>
           </div>
-          <div class="skill-bar"><div class="skill-fill" style="width:80%"></div></div>
+          <div class="skill-bar"><div class="skill-fill" data-level="80%"></div></div>
         </li>
         <li>
           <div class="skill-row">
             <span class="skill-name">Automation Systems</span>
             <span class="skill-level">77%</span>
           </div>
-          <div class="skill-bar"><div class="skill-fill" style="width:77%"></div></div>
+          <div class="skill-bar"><div class="skill-fill" data-level="77%"></div></div>
         </li>
       </ul>
 
@@ -596,6 +660,15 @@
   .skill-row{ display:flex; justify-content:space-between; font-weight:700; font-size:0.92rem; margin-bottom:6px; color:rgba(234,245,255,0.9); }
   .skill-bar{ height:8px; background:rgba(255,255,255,0.03); border-radius:8px; overflow:hidden; }
   .skill-fill{ height:100%; background:linear-gradient(90deg,#00e6ff,#6a9eff); border-radius:8px; box-shadow:0 6px 18px rgba(0,230,255,0.08); }
+
+    /* start fills collapsed; animate on reveal */
+    .skill-fill{ width:0; transition: width 900ms cubic-bezier(.2,.9,.3,1); }
+
+    /* Respect prefers-reduced-motion */
+    @media (prefers-reduced-motion: reduce){
+      .skill-fill{ transition:none !important; }
+      .navlinks.open{ animation:none !important; }
+    }
 
   .card-actions{ display:flex; justify-content:space-between; align-items:center; margin-top:12px; gap:12px; }
   .learn-btn{ padding:8px 12px; border-radius:10px; border:none; background:linear-gradient(135deg,#00e6ff,#6a9eff); color:#001; font-weight:800; cursor:pointer; }
@@ -666,6 +739,14 @@
   const modalList = document.getElementById('exp-modal-list');
   const modalLink = document.getElementById('exp-modal-link');
   const modalClose = document.querySelector('.modal-close');
+  // Project links configuration (easy to edit)
+  window.PROJECT_LINKS = window.PROJECT_LINKS || {
+    ai: 'https://github.com/lewisanesu/vision-ml',
+    prog: 'https://github.com/lewisanesu/software-engineering',
+    iot: 'https://github.com/lewisanesu/iot-projects'
+  };
+
+  const LINKS = window.PROJECT_LINKS;
 
   const DETAILS = {
     ai: {
@@ -677,7 +758,7 @@
         "Explainable AI: SHAP & LIME integration",
         "Model evaluation: cross-validation, ROC-AUC, confusion matrices"
       ],
-      link: "#"
+      link: LINKS.ai || '#'
     },
     prog: {
       title: 'Programming Languages & Software Engineering',
@@ -688,7 +769,7 @@
         "JavaScript: modern ES modules, async patterns, DOM & fetch",
         "Software practices: version control, CI, unit testing"
       ],
-      link: "#"
+      link: LINKS.prog || '#'
     },
     iot: {
       title: 'Internet of Things & Embedded Systems',
@@ -699,7 +780,7 @@
         "Hardware: Arduino, ESP32, PCB basics",
         "Edge computing: lightweight inference, power efficiency"
       ],
-      link: "#"
+      link: LINKS.iot || '#'
     }
   };
 
@@ -788,6 +869,7 @@
 <style>
   :root {
     --bg: #0a0a0a; /* black background */
+    
     --card: rgba(255,255,255,0.05); /* subtle white card */
     --muted: #aaa; /* muted gray */
     --accent: #094989df; /* blue accent */
@@ -1131,6 +1213,148 @@
   </script>
 </body>
 <!-- ================= FULL FEATURE CHATBOT WIDGET (DROP IN) ================= -->
+<button id="back-to-top" aria-label="Back to top">↑</button>
+
+<script>
+  (function(){
+    if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){ return; }
+
+    // Animate skill bars when cards come into view
+    const cardObserver = new IntersectionObserver((entries, obs)=>{
+      entries.forEach(en=>{
+        if(en.isIntersecting){
+          const fills = en.target.querySelectorAll('.skill-fill');
+          fills.forEach(f => {
+            const level = f.getAttribute('data-level') || f.style.width || '0%';
+            f.style.width = level;
+          });
+          obs.unobserve(en.target);
+        }
+      });
+    }, {threshold: 0.18});
+
+    document.querySelectorAll('.card').forEach(c => cardObserver.observe(c));
+
+    // Theme toggle (persist in localStorage) with animated icon
+    const themeBtn = document.getElementById('site-theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    function setThemeLight(on){
+      if(on){
+        document.documentElement.setAttribute('data-theme','light');
+        themeBtn.classList.add('light');
+        themeBtn.setAttribute('aria-pressed','true');
+        localStorage.setItem('site-theme','light');
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+        themeBtn.classList.remove('light');
+        themeBtn.setAttribute('aria-pressed','false');
+        localStorage.setItem('site-theme','dark');
+      }
+    }
+    const storedTheme = localStorage.getItem('site-theme');
+    if(storedTheme === 'light') setThemeLight(true);
+    else if(storedTheme === 'dark') setThemeLight(false);
+    else { // no stored: follow prefers-color-scheme
+      if(window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) setThemeLight(true);
+      else setThemeLight(false);
+    }
+
+    if(themeBtn){ themeBtn.addEventListener('click', ()=>{
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      setThemeLight(!isLight);
+    }); }
+
+    // Parallax for profile image on mouse move
+    const hero = document.querySelector('.hero-inner');
+    const profile = document.querySelector('.profile-box img');
+    if(hero && profile){
+      hero.addEventListener('mousemove', (e)=>{
+        const r = hero.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - 0.5; // -0.5 .. 0.5
+        const y = (e.clientY - r.top) / r.height - 0.5;
+        profile.style.transform = `translate(${x*8}px, ${y*8}px) rotate(${x*2}deg) scale(1.01)`;
+      });
+      hero.addEventListener('mouseleave', ()=>{ profile.style.transform = ''; });
+    }
+
+    // Back to top button
+    const btt = document.getElementById('back-to-top');
+    function checkScroll(){ if(window.pageYOffset > 320) btt.classList.add('show'); else btt.classList.remove('show'); }
+    window.addEventListener('scroll', checkScroll, {passive:true}); checkScroll();
+    btt.addEventListener('click', ()=> window.scrollTo({top:0, behavior:'smooth'}));
+
+    // Improve: close mobile menu and animate fills on reveal of the sections too
+    const sectionObserver = new IntersectionObserver((entries)=>{
+      entries.forEach(en=>{ if(en.isIntersecting){ const nav = document.querySelector('.navlinks'); if(nav && nav.classList.contains('open')) nav.classList.remove('open'); }});
+    }, {threshold:0.2});
+    document.querySelectorAll('main section, section#home').forEach(s=> sectionObserver.observe(s));
+
+  })();
+</script>
+<script>
+    // Particle network (connected nodes) background
+    (function(){
+      if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const canvas = document.getElementById('particles-canvas');
+      if(!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let W = canvas.width = window.innerWidth;
+      let H = canvas.height = window.innerHeight;
+      const PR = window.devicePixelRatio || 1;
+      canvas.width = W * PR; canvas.height = H * PR; canvas.style.width = W + 'px'; canvas.style.height = H + 'px'; ctx.scale(PR, PR);
+
+      const nodes = [];
+      const COUNT = Math.max(22, Math.floor(W * 0.02));
+      for(let i=0;i<COUNT;i++) nodes.push({ x: Math.random()*W, y: Math.random()*H, vx: (Math.random()-0.5)*0.5, vy: (Math.random()-0.5)*0.5, r: 2 + Math.random()*3 });
+
+      function step(){
+        ctx.clearRect(0,0,W,H);
+        // move & draw nodes
+        for(let i=0;i<nodes.length;i++){
+          const p = nodes[i];
+          p.x += p.vx; p.y += p.vy;
+          if(p.x < -20) p.x = W + 20; if(p.x > W + 20) p.x = -20;
+          if(p.y < -20) p.y = H + 20; if(p.y > H + 20) p.y = -20;
+          // draw small circle
+          ctx.fillStyle = 'rgba(160,220,255,0.9)'; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
+        }
+
+        // draw links between close nodes
+        for(let i=0;i<nodes.length;i++){
+          for(let j=i+1;j<nodes.length;j++){
+            const a = nodes[i], b = nodes[j];
+            const dx = a.x-b.x, dy = a.y-b.y; const d2 = dx*dx+dy*dy;
+            if(d2 < (W*0.06)*(W*0.06)){
+              const alpha = 0.5 * (1 - d2/((W*0.06)*(W*0.06)));
+              ctx.strokeStyle = `rgba(100,180,255,${alpha})`; ctx.lineWidth = 0.9; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+            }
+          }
+        }
+      }
+
+      let raf = null;
+      function loop(){ step(); raf = requestAnimationFrame(loop); }
+      loop();
+
+      // gentle repulsion on mouse
+      window.addEventListener('mousemove', (e)=>{
+        const mx = e.clientX, my = e.clientY;
+        nodes.forEach(n=>{ const dx = n.x - mx, dy = n.y - my, d2 = dx*dx + dy*dy; if(d2 < 40000){ const f = (40000-d2)/40000; n.vx += (dx/120)*f; n.vy += (dy/120)*f; } });
+      });
+
+      // resize
+      let resizeTimer;
+      window.addEventListener('resize', ()=>{
+        clearTimeout(resizeTimer); cancelAnimationFrame(raf);
+        resizeTimer = setTimeout(()=>{
+          W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; canvas.width = W * PR; canvas.height = H * PR; canvas.style.width = W + 'px'; canvas.style.height = H + 'px'; ctx.scale(PR, PR);
+          raf = requestAnimationFrame(loop);
+        }, 120);
+      }, {passive:true});
+
+      document.addEventListener('visibilitychange', ()=>{ if(document.hidden) cancelAnimationFrame(raf); else raf = requestAnimationFrame(loop); });
+    })();
+</script>
 <style>
   /* Container + button */
   #chat-widget-btn{
